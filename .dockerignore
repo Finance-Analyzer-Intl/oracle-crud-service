@@ -1,0 +1,48 @@
+
+# Git repository files
+.git/
+.gitignore
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Maven build outputs
+target/
+
+# Maven wrapper (if not used in Dockerfile)
+.mvn/
+mvnw
+mvnw.cmd
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation
+README.md
+docs/
+
+# CI/CD configuration
+.github/
