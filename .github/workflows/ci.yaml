@@ -61,3 +61,50 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  deploy:
+    name: Deploy to Local Kubernetes
+
+    # Wait until CI publishes the Docker image
+    needs: build-and-publish
+
+    # Deploy only from trusted branch pushes
+    if: >-
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' ||
+       github.ref == 'refs/heads/master')
+
+    # Execute on your Windows computer
+    runs-on: [self-hosted, windows, local-k8s]
+
+    permissions:
+      contents: read
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Verify Kubernetes connection
+        shell: cmd
+        run: |
+          kubectl --context docker-desktop get nodes
+          kubectl --context docker-desktop get deployment oracle-crud-service
+
+      - name: Deploy new Docker image
+        shell: cmd
+        run: |
+          kubectl --context docker-desktop set image deployment/oracle-crud-service oracle-crud-service=ghcr.io/finance-analyzer-intl/oracle-crud-service:${{ github.sha }}
+
+      - name: Verify Kubernetes rollout
+        shell: cmd
+        run: |
+          kubectl --context docker-desktop rollout status deployment/oracle-crud-service --timeout=180s
+
+      - name: Display deployed image
+        shell: cmd
+        run: |
+          kubectl --context docker-desktop get deployment oracle-crud-service -o=jsonpath="{.spec.template.spec.containers[0].image}"
+
+      - name: Display pods
+        shell: cmd
+        run: |
+          kubectl --context docker-desktop get pods -l app=oracle-crud-service
