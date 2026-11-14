@@ -50,16 +50,31 @@ jobs:
           -Dsonar.projectKey=Finance-Analyzer-Intl_oracle-crud-service
           -Dsonar.qualitygate.wait=true
           -Dsonar.qualitygate.timeout=300
+          
+      # 5. Snyk Stage
 
-      # 4. Construct lowercase GHCR image name
+      - name: Set up Node.js for Snyk CLI
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Scan Maven dependencies
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --file=pom.xml --severity-threshold=high
+
+      # 6. Construct lowercase GHCR image name
       - name: Set image name
         run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
 
-      # 5. Enable Docker Buildx
+      # 7. Enable Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
 
-      # 6. Log in to GitHub Container Registry
+      # 8. Log in to GitHub Container Registry
       - name: Login to GHCR
         if: github.event_name != 'pull_request'
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550
@@ -68,7 +83,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 7. Build Docker image and publish on push/manual run
+      # 9. Build Docker image and publish on push/manual run
       - name: Build and push Docker image
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc
         with:
