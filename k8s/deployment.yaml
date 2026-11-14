@@ -21,6 +21,13 @@ spec:
           envFrom:
             - secretRef:
                 name: oracle-db-secrets
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "768Mi"
           startupProbe:
             httpGet:
               path: /livez
