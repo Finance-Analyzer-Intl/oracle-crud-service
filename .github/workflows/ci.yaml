@@ -33,7 +33,7 @@ jobs:
 
       # 3. Compile, test and package application
       - name: Build and test with Maven
-        run: mvn -B clean package -DskipTests
+        run: mvn -B clean verify
 
       # 4. Construct lowercase GHCR image name
       - name: Set image name
