@@ -53,14 +53,20 @@ jobs:
 
       # 5. Snyk dependency security scanning
 
+
       - name: Install Snyk CLI
         run: |
           curl --fail --location --silent --show-error \
+            --proto '=https' \
+            --proto-redir '=https' \
             https://downloads.snyk.io/cli/stable/snyk-linux \
             --output snyk
+          
           chmod +x snyk
           sudo mv snyk /usr/local/bin/snyk
+          
           snyk --version
+
 
       - name: Scan Maven dependencies
         env:
