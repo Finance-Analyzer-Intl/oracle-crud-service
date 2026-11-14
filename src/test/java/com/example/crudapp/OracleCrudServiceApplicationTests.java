@@ -1,6 +1,7 @@
 package com.example.crudapp;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * real or Testcontainers-managed database before running this.
  */
 @SpringBootTest
+@EnabledIfEnvironmentVariable(named = "RUN_ORACLE_INTEGRATION_TESTS", matches = "true")
 class OracleCrudServiceApplicationTests {
 
     @Test
