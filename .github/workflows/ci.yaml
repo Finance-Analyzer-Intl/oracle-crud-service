@@ -50,16 +50,17 @@ jobs:
           -Dsonar.projectKey=Finance-Analyzer-Intl_oracle-crud-service
           -Dsonar.qualitygate.wait=true
           -Dsonar.qualitygate.timeout=300
-          
-      # 5. Snyk Stage
 
-      - name: Set up Node.js for Snyk CLI
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '22'
+      # 5. Snyk dependency security scanning
 
       - name: Install Snyk CLI
-        run: npm install -g snyk
+        run: |
+          curl --fail --location --silent --show-error \
+            https://downloads.snyk.io/cli/stable/snyk-linux \
+            --output snyk
+          chmod +x snyk
+          sudo mv snyk /usr/local/bin/snyk
+          snyk --version
 
       - name: Scan Maven dependencies
         env:
