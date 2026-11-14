@@ -22,6 +22,8 @@ jobs:
       # 1. Download repository source code
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       # 2. Install Java 21 and cache Maven dependencies
       - name: Set up Java 21
@@ -34,6 +36,20 @@ jobs:
       # 3. Compile, test and package application
       - name: Build and test with Maven
         run: mvn -B clean verify
+
+      # 4. SonarQube scan and JaCoCo report
+      - name: SonarQube Code Quality Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          mvn -B
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.organization=finance-analyzer-intl
+          -Dsonar.projectKey=Finance-Analyzer-Intl_oracle-crud-service
+          -Dsonar.qualitygate.wait=true
+          -Dsonar.qualitygate.timeout=300
 
       # 4. Construct lowercase GHCR image name
       - name: Set image name
