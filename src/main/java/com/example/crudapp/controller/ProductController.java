@@ -25,6 +25,11 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @GetMapping("/hello")
+    public String helloWorld() {
+        return "Hello, World!";
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO request) {
         ProductResponseDTO created = productService.createProduct(request);
