@@ -21,3 +21,21 @@ spec:
           envFrom:
             - secretRef:
                 name: oracle-db-secrets
+          startupProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 3
