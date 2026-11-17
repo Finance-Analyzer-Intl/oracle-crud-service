@@ -143,10 +143,20 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
           namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
 
+      - name: Select OpenShift namespace
+        env:
+          OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
+        run: |
+          test -n "$OPENSHIFT_NAMESPACE"
+          oc config set-context --current --namespace="$OPENSHIFT_NAMESPACE"
+          oc project
+
       - name: Verify OpenShift connection
+        env:
+          OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
         run: |
           oc whoami
-          oc project
+          oc project "$OPENSHIFT_NAMESPACE"
           oc get deployment oracle-crud-service
 
       - name: Apply OpenShift configuration
