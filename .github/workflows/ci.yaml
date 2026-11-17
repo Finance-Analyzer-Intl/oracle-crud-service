@@ -109,52 +109,62 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           docker tag "${IMAGE_NAME}:${GITHUB_SHA}" "${IMAGE_NAME}:latest"
-          docker push "${IMAGE_NAME}:${GITHUB_SHA}"
+          docker tag "${IMAGE_NAME}:${GITHUB_SHA}" "${IMAGE_NAME}:${GITHUB_RUN_NUMBER}"
+          
           docker push "${IMAGE_NAME}:latest"
+          docker push "${IMAGE_NAME}:${GITHUB_RUN_NUMBER}"
 
-  deploy:
-    name: Deploy to Local Kubernetes
-
-    # Wait until CI publishes the Docker image
+  deploy-openshift:
+    name: Deploy to OpenShift
     needs: build-and-publish
-
-    # Deploy only from trusted branch pushes
-    if: >-
-      github.event_name == 'push' &&
-      (github.ref == 'refs/heads/main' ||
-       github.ref == 'refs/heads/master')
-
-    # Execute on your Windows computer
-    runs-on: [self-hosted, windows, local-k8s]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
 
-    timeout-minutes: 10
+    concurrency:
+      group: openshift-dev
+      cancel-in-progress: false
 
     steps:
-      - name: Verify Kubernetes connection
-        shell: cmd
-        run: |
-          kubectl --context docker-desktop get nodes
-          kubectl --context docker-desktop get deployment oracle-crud-service
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Deploy new Docker image
-        shell: cmd
-        run: |
-          kubectl --context docker-desktop set image deployment/oracle-crud-service oracle-crud-service=ghcr.io/finance-analyzer-intl/oracle-crud-service:${{ github.sha }}
+      - name: Install OpenShift CLI
+        uses: redhat-actions/openshift-tools-installer@bf1d8fd8fa963cff1d33688473e51f948748991e
+        with:
+          oc: "4"
 
-      - name: Verify Kubernetes rollout
-        shell: cmd
-        run: |
-          kubectl --context docker-desktop rollout status deployment/oracle-crud-service --timeout=180s
+      - name: Login to OpenShift
+        uses: redhat-actions/oc-login@2a1614bc977c054c8786c8e35fc9534bd0ddc156
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
 
-      - name: Display deployed image
-        shell: cmd
+      - name: Verify OpenShift connection
         run: |
-          kubectl --context docker-desktop get deployment oracle-crud-service -o=jsonpath="{.spec.template.spec.containers[0].image}"
+          oc whoami
+          oc project
+          oc get deployment oracle-crud-service
 
-      - name: Display pods
-        shell: cmd
+      - name: Apply OpenShift configuration
         run: |
-          kubectl --context docker-desktop get pods -l app=oracle-crud-service
+          oc apply -f openshift/configmap.yaml
+          oc apply -f openshift/service.yaml
+          oc apply -f openshift/route.yaml
+
+      - name: Deploy versioned application image
+        run: |
+          oc set image deployment/oracle-crud-service \
+            oracle-crud-service=ghcr.io/finance-analyzer-intl/oracle-crud-service:${GITHUB_RUN_NUMBER}
+          
+          oc rollout status deployment/oracle-crud-service \
+            --timeout=180s
+
+      - name: Verify deployment
+        run: |
+          oc get pods
+          oc get deployment oracle-crud-service
+          oc get route oracle-crud-service
