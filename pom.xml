@@ -83,6 +83,12 @@
             <version>3.2.0</version>
         </dependency>
 
+        <!-- Oracle Cloud Dependencies -->
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>oraclepki</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
