@@ -32,15 +32,6 @@ public class ProductController {
     private final ProductService productService;
 
     @Operation(
-            summary = "Test Controller",
-            description = "Prints Hello World as part of quick API testing"
-    )
-    @GetMapping("/hello")
-    public String helloWorld() {
-        return "Hello, World!";
-    }
-
-    @Operation(
             summary = "Create New Product Entry",
             description = "Enter name, description, price and quantity of product"
     )
