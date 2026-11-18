@@ -2,9 +2,9 @@ name: Spring Boot CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   pull_request:
-    branches: [main, master]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -46,8 +46,8 @@ jobs:
           mvn -B
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.organization=finance-analyzer-intl
-          -Dsonar.projectKey=Finance-Analyzer-Intl_oracle-crud-service
+          -Dsonar.organization=oracle-commerce
+          -Dsonar.projectKey=Oracle-Commerce_oracle-product-service
           -Dsonar.qualitygate.wait=true
           -Dsonar.qualitygate.timeout=300
 
@@ -157,24 +157,25 @@ jobs:
         run: |
           oc whoami
           oc project "$OPENSHIFT_NAMESPACE"
-          oc get deployment oracle-crud-service
 
       - name: Apply OpenShift configuration
         run: |
           oc apply -f openshift/configmap.yaml
           oc apply -f openshift/service.yaml
           oc apply -f openshift/route.yaml
+          oc apply -f openshift/deployment.yaml
 
       - name: Deploy versioned application image
         run: |
-          oc set image deployment/oracle-crud-service \
-            oracle-crud-service=ghcr.io/finance-analyzer-intl/oracle-crud-service:${GITHUB_RUN_NUMBER}
+          oc set image deployment/oracle-product-service \
+            oracle-product-service=ghcr.io/oracle-commerce/oracle-product-service:${GITHUB_RUN_NUMBER}
           
-          oc rollout status deployment/oracle-crud-service \
+          oc rollout status deployment/oracle-product-service \
             --timeout=180s
 
       - name: Verify deployment
         run: |
-          oc get pods
-          oc get deployment oracle-crud-service
-          oc get route oracle-crud-service
+          oc get pods -l app=oracle-product-service
+          oc get deployment oracle-product-service
+          oc get service oracle-product-service
+          oc get route oracle-product-service

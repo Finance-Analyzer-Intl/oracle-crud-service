@@ -1,11 +1,11 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: oracle-crud-service
+  name: oracle-product-service
 spec:
   to:
     kind: Service
-    name: oracle-crud-service
+    name: oracle-product-service
   port:
     targetPort: http
   tls:

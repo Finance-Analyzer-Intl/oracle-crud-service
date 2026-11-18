@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: oracle-crud-service
+  name: oracle-product-service
 spec:
   selector:
-    app: oracle-crud-service
+    app: oracle-product-service
   ports:
     - name: http
       port: 8080

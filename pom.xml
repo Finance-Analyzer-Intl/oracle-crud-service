@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>oracle-crud-service</artifactId>
+    <artifactId>oracle-product-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>oracle-crud-service</name>
     <description>Spring Boot REST CRUD service backed by Oracle Database</description>

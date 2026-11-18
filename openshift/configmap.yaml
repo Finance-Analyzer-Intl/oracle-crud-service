@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: oracle-crud-config
+  name: oracle-product-service-config
 data:
   SERVER_PORT: "8080"
   SPRING_PROFILES_ACTIVE: "prod"
