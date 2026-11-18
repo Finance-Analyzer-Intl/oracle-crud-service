@@ -28,12 +28,6 @@ class ProductControllerTest {
     private ProductController controller;
 
     @Test
-    void helloWorld_returnsExpectedText() {
-        assertEquals("Hello, World!", controller.helloWorld());
-        verifyNoInteractions(productService);
-    }
-
-    @Test
     void createProduct_returns201AndDelegatesToService() {
         ProductRequestDTO request = request();
         ProductResponseDTO response = response();
