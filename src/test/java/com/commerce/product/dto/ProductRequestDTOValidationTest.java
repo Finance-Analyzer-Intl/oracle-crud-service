@@ -1,4 +1,4 @@
-package com.example.crudapp.dto;
+package com.commerce.product.dto;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

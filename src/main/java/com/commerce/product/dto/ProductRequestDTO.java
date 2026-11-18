@@ -1,4 +1,4 @@
-package com.example.crudapp.dto;
+package com.commerce.product.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

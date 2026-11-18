@@ -1,7 +1,7 @@
-package com.example.crudapp.service;
+package com.commerce.product.service;
 
-import com.example.crudapp.dto.ProductRequestDTO;
-import com.example.crudapp.dto.ProductResponseDTO;
+import com.commerce.product.dto.ProductRequestDTO;
+import com.commerce.product.dto.ProductResponseDTO;
 
 import java.util.List;
 

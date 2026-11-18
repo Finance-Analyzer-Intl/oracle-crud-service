@@ -1,10 +1,10 @@
-package com.example.crudapp.service;
+package com.commerce.product.service;
 
-import com.example.crudapp.dto.ProductRequestDTO;
-import com.example.crudapp.dto.ProductResponseDTO;
-import com.example.crudapp.entity.Product;
-import com.example.crudapp.exception.ResourceNotFoundException;
-import com.example.crudapp.repository.ProductRepository;
+import com.commerce.product.dto.ProductRequestDTO;
+import com.commerce.product.dto.ProductResponseDTO;
+import com.commerce.product.entity.Product;
+import com.commerce.product.exception.ResourceNotFoundException;
+import com.commerce.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

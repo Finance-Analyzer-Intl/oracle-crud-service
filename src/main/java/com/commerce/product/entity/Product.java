@@ -1,4 +1,4 @@
-package com.example.crudapp.entity;
+package com.commerce.product.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

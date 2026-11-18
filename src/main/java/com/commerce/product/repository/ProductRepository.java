@@ -1,6 +1,6 @@
-package com.example.crudapp.repository;
+package com.commerce.product.repository;
 
-import com.example.crudapp.entity.Product;
+import com.commerce.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

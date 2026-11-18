@@ -1,4 +1,4 @@
-package com.example.crudapp.exception;
+package com.commerce.product.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

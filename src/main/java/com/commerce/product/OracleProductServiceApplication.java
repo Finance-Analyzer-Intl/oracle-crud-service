@@ -1,13 +1,13 @@
-package com.example.crudapp;
+package com.commerce.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OracleCrudServiceApplication {
+public class OracleProductServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OracleCrudServiceApplication.class, args);
+        SpringApplication.run(OracleProductServiceApplication.class, args);
     }
 
 }

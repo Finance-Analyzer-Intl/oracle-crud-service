@@ -1,4 +1,4 @@
-package com.example.crudapp.exception;
+package com.commerce.product.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

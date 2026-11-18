@@ -1,8 +1,8 @@
-package com.example.crudapp.controller;
+package com.commerce.product.controller;
 
-import com.example.crudapp.dto.ProductRequestDTO;
-import com.example.crudapp.dto.ProductResponseDTO;
-import com.example.crudapp.service.ProductService;
+import com.commerce.product.dto.ProductRequestDTO;
+import com.commerce.product.dto.ProductResponseDTO;
+import com.commerce.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

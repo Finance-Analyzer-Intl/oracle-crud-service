@@ -1,4 +1,4 @@
-package com.example.crudapp.dto;
+package com.commerce.product.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

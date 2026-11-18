@@ -1,4 +1,4 @@
-package com.example.crudapp.exception;
+package com.commerce.product.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
