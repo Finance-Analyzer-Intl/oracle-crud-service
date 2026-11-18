@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oracle-crud-service
+  name: oracle-product-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oracle-crud-service
+      app: oracle-product-service
   template:
     metadata:
       labels:
-        app: oracle-crud-service
+        app: oracle-product-service
     spec:
       containers:
-        - name: oracle-crud-service
-          image: ghcr.io/finance-analyzer-intl/oracle-crud-service:latest
+        - name: oracle-product-service
+          image: ghcr.io/oracle-commerce/oracle-product-service:latest
           imagePullPolicy: Always
 
           ports:
@@ -23,7 +23,7 @@ spec:
 
           envFrom:
             - configMapRef:
-                name: oracle-crud-config
+                name: oracle-product-service-config
             - secretRef:
                 name: oracle-db-secrets
 
